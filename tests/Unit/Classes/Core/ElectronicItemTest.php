@@ -14,6 +14,8 @@ class ElectroniItemTests extends TestCase{
     $itemData->id=1;
     $itemData->serialNumber=123;
     $itemData->ElectronicSpecification_id=123;
+	$itemData->expiryForUser=123;
+	
 
     $electronicItem = new ElectronicItem();
     $electronicItem->set($itemData);
@@ -25,7 +27,8 @@ class ElectroniItemTests extends TestCase{
 
     if ($electronicItemJson["id"]==$itemData->id &&
         $electronicItemJson["serialNumber"]==$itemData->serialNumber &&
-        $electronicItemJson["ElectronicSpecification_id"]== $itemData->ElectronicSpecification_id)
+        $electronicItemJson["ElectronicSpecification_id"]== $itemData->ElectronicSpecification_id &&
+		$electronicItemJson["expiryForUser"]==$itemData->expiryForUser)
       $valuesMatch=true;
     else
       $valuesMatch=false;
@@ -43,38 +46,45 @@ class ElectroniItemTests extends TestCase{
     $this->assertTrue($retrievedId==$itemData->id);
   }
 
-  //test for both setSerialNumber and getSerialNumber
-  public function testsetGetSerialNumber (){
-    $itemData=new \stdClass();
-    $itemData->id=1;
-    $itemData->serialNumber=123;
-    $itemData->ElectronicSpecification_id=123;
-    $electronicItem = new ElectronicItem();
-    $electronicItem->setSerialNumber($itemData->serialNumber);
-    $retrievedSerialNumber=$electronicItem->getSerialNumber();
-    $this->assertTrue($retrievedSerialNumber==$itemData->serialNumber);
-  }
+ 
 
   public function testgetElectronicSpecification_id(){
     $itemData=new \stdClass();
     $itemData->id=1;
     $itemData->serialNumber=123;
     $itemData->ElectronicSpecification_id=123;
+	$itemData->expiryForUser=123;
+	$itemData->User_id=123;
     $electronicItem = new ElectronicItem();
     $electronicItem->set($itemData);
     $retrievedElectronicSpecificationId=$electronicItem->getElectronicSpecification_id();
     $this->assertTrue($retrievedElectronicSpecificationId==$itemData->ElectronicSpecification_id);
   }
-  
+   //test for both setSerialNumber and getSerialNumber
+  public function testsetGetSerialNumber (){
+    $itemData=new \stdClass();
+    $itemData->id=1;
+    $itemData->serialNumber=123;
+    $itemData->ElectronicSpecification_id=123;
+	$itemData->expiryForUser=123;
+	$itemData->User_id=123;
+    $electronicItem = new ElectronicItem();
+    $electronicItem->setSerialNumber($itemData->serialNumber);
+    $retrievedSerialNumber=$electronicItem->getSerialNumber();
+    $this->assertTrue($retrievedSerialNumber==$itemData->serialNumber);
+  }
   //tests for both setExpiryforUser and getExpiryforUser
   public function testsetgetExpiryforUser (){
        $itemData=new \stdClass();
        $itemData->id=1;
        $itemData->serialNumber=123;
        $itemData->ElectronicSpecification_id=123;
+	   $itemData->expiryForUser=123;
+	   $itemData->User_id=123;
        $electronicItem = new ElectronicItem();
-       $electronicItem->setExpiryForUser($itemData->ExpiryForUser);
+       $electronicItem->setExpiryForUser($itemData->expiryForUser);
        $retrievedExpiry=$electronicItem->getExpiryForUser();
-       $this->assertTrue($retrievedExpiry==$itemData->ExpiryForUser);
+       $this->assertTrue($retrievedExpiry==$itemData->expiryForUser);
  }
+  
 }
