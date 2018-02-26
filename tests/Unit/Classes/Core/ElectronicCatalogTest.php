@@ -521,4 +521,22 @@ class ElectronicCatalogTest extends TestCase {
       $returnedEI = $electronicCatalog->addReturnedEI('abcc12345', 'cdee12345', '1');
       $this->assertTrue($returnedEI == $electronicItem);
     }
+    
+    public function testReserveFirstEIFromES(){
+       $this->electronicCatalog = $this;
+
+       $this->electronicItemMock1 = $this
+           ->getMockBuilder(ElectronicItem::class)
+           ->getMethods(['get'])
+           ->getMock();
+
+       $itemData = new \stdClass();
+       $itemData->id = '123';
+       $itemData->User_id = '123';
+       $itemData->expiryForUser = date('Y-m-d H:i:s', strtotime('5 minutes') );
+       $this->electronicItemMock1->method('get')->willReturn($itemData);
+
+       $returnedEI = $this->electronicCatalog->reserveFirstEIFromES('123', '123', 'Y-m-d H:i:s');
+       $this->assertTrue($returnedEI == $this->electronicItem);
+   }
 }
