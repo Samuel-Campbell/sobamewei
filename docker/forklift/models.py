@@ -15,6 +15,14 @@ class ElectronicItem:
             'expiryForUser': self.expiryForUser
         }
 
+    def __eq__(self, other):
+        return \
+            self.id == other.id and \
+            self.ElectronicSpecification_id == other.ElectronicSpecification_id and \
+            self.serialNumber == other.serialNumber and \
+            self.user_id == other.user_id and \
+            self.expiryForUser == other.expiryForUser
+
 
 class ElectronicSpecification:
     def __init__(self):
@@ -57,6 +65,25 @@ class ElectronicSpecification:
             'image': self.image
         }
 
+    def __eq__(self, other):
+        return \
+            self.id == other.id and \
+            self.dimension == other.dimension and \
+            self.weight == other.weight and \
+            self.modelNumber == other.modelNumber and \
+            self.brandName == other.brandName and \
+            self.hdSize == other.hdSize and \
+            self.price == other.price and \
+            self.processorType == other.processorType and \
+            self.ramSize == other.ramSize and \
+            self.cpuCores == other.cpuCores and \
+            self.batteryInfo == other.batteryInfo and \
+            self.os == other.os and \
+            self.camera == other.camera and \
+            self.touchScreen == other.touchScreen and \
+            self.ElectronicType_id == other.ElectronicType_id and \
+            self.displaySize == other.displaySize and \
+            self.image == other.image
 
 class ElectronicType:
     def __init__(self):
@@ -73,6 +100,12 @@ class ElectronicType:
             'screenSizeUnit': self.screenSizeUnit
         }
 
+    def __eq__(self, other):
+        return \
+            self.id == other.id and \
+            self.name == other.name and \
+            self.dimensionUnit == other.dimensionUnit and \
+            self.screenSizeUnit == other.screenSizeUnit
 
 class LoginLog:
     def __init__(self):
@@ -86,6 +119,12 @@ class LoginLog:
             'timestamp': self.timestamp,
             'User_id': self.User_id.jsonify()
         }
+
+    def __eq__(self, other):
+        return \
+            self.id == other.id and \
+            self.timestamp == other.timestamp and \
+            self.User_id == other.User_id
 
 
 class Transaction:
@@ -106,6 +145,15 @@ class Transaction:
             'timestamp': self.timestamp,
             'customer_id': self.customer_id.jsonify()
         }
+
+    def __eq__(self, other):
+        return \
+            self.id == other.id and \
+            self.ElectronicSpec_id == other.ElectronicSpec_id and \
+            self.item_id == other.item_id and \
+            self.serialNumber == other.serialNumber and \
+            self.timestamp == other.timestamp and \
+            self.customer_id == other.customer_id
 
 
 class User:
@@ -132,3 +180,15 @@ class User:
             'password': self.password,
             'remember_token': self.remember_token
         }
+
+    def __eq__(self, other):
+        return \
+            self.id == other.id and \
+            self.firstName == other.firstName and \
+            self.lastName == other.lastName and \
+            self.email == other.email and \
+            self.phone == other.phone and \
+            self.admin == other.admin and \
+            self.physicalAddress == other.physicalAddress and \
+            self.password == other.password and \
+            self.remember_token == other.remember_token

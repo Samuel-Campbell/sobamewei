@@ -1,5 +1,5 @@
 from mysql import MySQLConnector
-from mongodb import MongoDbConnector
+from mongodb.mongodb import MongoDbConnector
 
 
 if __name__ == '__main__':
