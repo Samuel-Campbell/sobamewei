@@ -6,10 +6,10 @@ import time
 
 
 class MySQLConnector:
-    database = os.environ['DB_DATABASE']
-    user = os.environ['DB_USERNAME']
-    password = os.environ['DB_PASSWORD']
-    host = os.environ['DB_HOST']
+    database = 'conushop'
+    user = 'root'
+    password = 'isY2metT'
+    host = 'localhost'
 
     def __init__(self):
         try:
@@ -17,7 +17,8 @@ class MySQLConnector:
         except KeyError:
             print("Key Error: Environment variables not correctly set")
             sys.exit(1)
-        except:
+        except Exception,e:
+            print str(e)
             print("Could not connect to the mysql database")
             sys.exit(1)
         db.close()

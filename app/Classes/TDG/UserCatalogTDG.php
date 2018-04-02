@@ -1,15 +1,43 @@
 <?php
 
 namespace App\Classes\TDG;
+require __DIR__ . '/../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/mongodb/mongodb/src/Client.php';
 
+
+//\vendor\mongodb\mongodb\src\Client.php;
 use Hash;
+use MongoDB\Client;
 
 class UserCatalogTDG {
 
     public $conn;
+    public $mongoClient;
+    public $db;
+    public  $list_users;
+
+
 
     public function __construct() {
         $this->conn = new MySQLConnection();
+
+        // Connect to Mongodb
+        $mongoClient = new Client();
+        if($mongoClient != null) echo $mongoClient;
+
+       //connect to conushop database
+        $this->db = $mongoClient->conushop;
+        //get the users collection
+        $this->list_users= $this->db->User;
+
+//        // Get the users collection
+//        $list_users = $db->User;
+//        $user = array(
+//            'firstName' => 'MongoDB',
+//            'lastName' => 'Fan',
+//            'tags' => array('developer','user')
+//        );
+//        $list_users->insertOne($user);
     }
 
     /**
@@ -54,6 +82,8 @@ class UserCatalogTDG {
             if ($value !== null) {
                 $queryString .= $key . ' = :' . $key;
                 $queryString .= ' , ';
+
+
             }
         }
 
@@ -66,7 +96,6 @@ class UserCatalogTDG {
     public function login($email, $password) {
         $parameters = new \stdClass();
         $parameters->email = $email;
-
         $queryString = 'SELECT * FROM User WHERE ';
 
         //For each key, (ex: id, email, etc.), we build the query
@@ -96,12 +125,16 @@ class UserCatalogTDG {
             if (is_array($objectData[$key]) || is_null($objectData[$key])) {
                 unset($objectData[$key]);
             }
-        }
 
+        }
         $parameters = (object) $objectData;
 
-        $queryString = 'INSERT INTO User SET ';
+        //create a user document for mongodb
+        $user = json_decode(json_encode($parameters), True);
+        //insert a new user in mongodb
+        $this->list_users->insertOne($user);
 
+        $queryString = 'INSERT INTO User SET ';
 
         foreach ((array) $parameters as $key => $value) {
             $queryString .= $key . ' = :' . $key;
@@ -110,7 +143,6 @@ class UserCatalogTDG {
 
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
-
 
         return $this->conn->query($queryString, $parameters);
     }
@@ -125,6 +157,8 @@ class UserCatalogTDG {
         $parameters = new \stdClass();
         $parameters->id = $user->get()->id;
 
+        //remove a user in mongodb, because an email is unique, we can use it to delete a user
+        $deleteResult = $this->list_users->deleteOne(['email' => $user->get()->email]);
         return $this->conn->query($queryString, $parameters);
 
     }
