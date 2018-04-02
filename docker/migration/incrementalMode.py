@@ -6,12 +6,12 @@ from consistency_checker.consistency_checker import ConsistencyChecker
 
 
 def mysql_dictionary():
-    electronic_item_list = mysql_connector.select_electronic_item(0)
-    electronic_specification_list = mysql_connector.select_electronic_specification(0)
-    electronic_type_list = mysql_connector.select_electronic_type(0)
-    login_log_list = mysql_connector.select_login_log(0)
-    transaction_list = mysql_connector.select_transaction(0)
-    user_list = mysql_connector.select_user(0)
+    electronic_item_list = mysql_connector.select_electronic_item()
+    electronic_specification_list = mysql_connector.select_electronic_specification()
+    electronic_type_list = mysql_connector.select_electronic_type()
+    login_log_list = mysql_connector.select_login_log()
+    transaction_list = mysql_connector.select_transaction()
+    user_list = mysql_connector.select_user()
 
     mysql_dict = {
         MySQLTableEnum.User: user_list,
@@ -65,19 +65,23 @@ def insert_into_mongodb(mysql_dict):
         user_tdg.UserTdg().insert(model)
 
 
+def run():
+    # select all form mysql
+    mysql_dict = mysql_dictionary()
+
+    # insert new data
+    insert_into_mongodb(mysql_dict)
+    # collect inserted data for consistency check
+    mongodb_dict = mongodb_dictionary()
+
+    # consistency check
+    ConsistencyChecker().check_database_consistency(mysql_dict, mongodb_dict, log=True)
+
+
 if __name__ == '__main__':
     mysql_connector = MySQLConnector()
     while True:
-        # select all form mysql
-        mysql_dict = mysql_dictionary()
-
-        # insert new data
-        insert_into_mongodb(mysql_dict)
-        # collect inserted data for consistency check
-        mongodb_dict = mongodb_dictionary()
-
-        # consistency check
-        ConsistencyChecker().check_database_consistency(mysql_dict, mongodb_dict, log=True)
+        run()
 
         # perform update in mysql
         mysql_connector.update_last_forklift()
