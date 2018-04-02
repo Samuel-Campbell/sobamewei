@@ -76,7 +76,6 @@ class MySQLConnector:
         INNER JOIN ElectronicType on ElectronicSpecification.ElectronicType_id = ElectronicType.id"""
         if x == 0:
             query = query + "\nWHERE ElectronicItem.last_forklift_or_change_check in (-1,0,2)"
-            print query
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:

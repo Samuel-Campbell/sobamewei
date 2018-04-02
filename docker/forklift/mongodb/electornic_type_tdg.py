@@ -7,3 +7,8 @@ class ElectronicTypeTdg(MongoDbConnector):
 
     def insert(self, model):
         self.client[self.database]['ElectronicType'].insert_one(model.jsonify())
+
+    def select(self):
+        cursor = self.client[self.database]['ElectronicType'].find()
+        for c in cursor:
+            print(c)

@@ -1,10 +1,10 @@
-from mongodb import MongoDbConnector
-from mysql import MySQLConnector
+from mongodb import mongodb, electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
+    user_tdg, login_log_tdg, transaction_tdg
+from mysql.mysql import MySQLConnector
 
 if __name__ == '__main__':
 
     mysql_connector = MySQLConnector()
-    mongodb_connector = MongoDbConnector()
 
     electronic_item_list = mysql_connector.select_electronic_item(0)
     electronic_specification_list = mysql_connector.select_electronic_specification(0)
@@ -13,25 +13,23 @@ if __name__ == '__main__':
     transaction_list = mysql_connector.select_transaction(0)
     user_list = mysql_connector.select_user(0)
 
-
-
     for model in electronic_item_list:
-      mongodb_connector.insert_electronic_item(model)
+        electronic_item_tdg.ElectronicItemTdg().insert(model)
 
     for model in electronic_specification_list:
-      mongodb_connector.insert_electronic_specification(model)
+        electronic_specification_tdg.ElectronicSpecificationTdg().insert(model)
 
     for model in electronic_type_list:
-      mongodb_connector.insert_electronic_type(model)
+        electornic_type_tdg.ElectronicTypeTdg().insert(model)
 
     for model in login_log_list:
-      mongodb_connector.insert_login_log(model)
+        login_log_tdg.LoginLogTdg().insert(model)
 
     for model in transaction_list:
-      mongodb_connector.insert_transaction(model)
+        transaction_tdg.TransactionTdg().insert(model)
 
     for model in user_list:
-      mongodb_connector.insert_user(model)
+        user_tdg.UserTdg().insert(model)
 
     mysql_connector.update_last_forklift()
 
