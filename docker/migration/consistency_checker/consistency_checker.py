@@ -68,34 +68,17 @@ class ConsistencyChecker:
             update_set = old_set.difference(new_set)
 
             for model in update_set:
-                ConsistencyChecker.__update(model, key)
+                if log:
+                    ConsistencyChecker.__update(model, key)
 
-            delete_set = new_set.difference(old_set)
-            for model in delete_set:
-                ConsistencyChecker.__delete(model, key)
+            inconsistent_count += len(update_set)
 
-            inconsistent_count += len(update_set) + len(delete_set)
-        inconsistent_ratio = (data_length - inconsistent_count) / data_length * 100
+        inconsistent_ratio = ((data_length * 1.0) - inconsistent_count) / data_length * 100
         if log:
             f = open(self.log_directory + 'log.txt', 'a')
             f.write("Consistent ratio: {}\n".format(inconsistent_ratio))
             f.close()
         return inconsistent_ratio
-
-    @staticmethod
-    def __delete(model, table):
-        if table == MySQLTableEnum.User:
-            user_tdg.UserTdg().delete(model)
-        elif table == MySQLTableEnum.ElectronicSpecification:
-            electronic_specification_tdg.ElectronicSpecificationTdg().delete(model)
-        elif table == MySQLTableEnum.ElectronicType:
-            electornic_type_tdg.ElectronicTypeTdg().delete(model)
-        elif table == MySQLTableEnum.ElectronicItem:
-            electronic_item_tdg.ElectronicItemTdg().delete(model)
-        elif table == MySQLTableEnum.LoginLog:
-            login_log_tdg.LoginLogTdg().delete(model)
-        elif table == MySQLTableEnum.Transaction:
-            transaction_tdg.TransactionTdg().delete(model)
 
     @staticmethod
     def __update(model, table):

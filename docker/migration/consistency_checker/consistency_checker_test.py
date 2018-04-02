@@ -27,3 +27,12 @@ class TestConsistencyChecker(unittest.TestCase):
         cc = ConsistencyChecker()
         result = cc.check_database_consistency(mock_old_db, mock_new_db)
         self.assertTrue(result == 100)
+
+        mock_new_db = {
+            'table1': [MockObj(1), MockObj(2), MockObj(3)],
+            'table2': [MockObj(4), MockObj(5), MockObj(8)],
+        }
+
+        cc = ConsistencyChecker()
+        result = cc.check_database_consistency(mock_old_db, mock_new_db)
+        self.assertTrue(int(result) == 83)
