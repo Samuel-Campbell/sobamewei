@@ -1,7 +1,7 @@
 import MySQLdb
 import sys
-from models import models
-import time
+
+from database.models import models
 
 
 class MySQLTableEnum:
@@ -121,6 +121,7 @@ class MySQLConnector:
             electronic_item_model.expiryForUser = r[31]
             electronic_item_list.append(electronic_item_model)
         db.close()
+        electronic_item_list.sort(key=lambda x: x.id)
         return electronic_item_list
 
     def select_electronic_specification(self,x=-2):
@@ -180,6 +181,7 @@ class MySQLConnector:
             electronic_specification_model.image = r[19]
             electronic_specification_list.append(electronic_specification_model)
         db.close()
+        electronic_specification_list.sort(key=lambda x: x.id)
         return electronic_specification_list
 
     def select_electronic_type(self, x=-2):
@@ -199,6 +201,7 @@ class MySQLConnector:
             model.screenSizeUnit = r[3]
             electronic_type_list.append(model)
         db.close()
+        electronic_type_list.sort(key=lambda x: x.id)
         return electronic_type_list
 
     def select_login_log(self, x=-2):
@@ -238,6 +241,7 @@ class MySQLConnector:
             login_log_model.User_id = user_model
             login_log_list.append(login_log_model)
         db.close()
+        login_log_list.sort(key=lambda x: x.id)
         return login_log_list
 
     def select_transaction(self, x=-2):
@@ -328,6 +332,7 @@ class MySQLConnector:
             transaction_model.customer_id = user_model
             transaction_list.append(transaction_model)
         db.close()
+        transaction_list.sort(key=lambda x: x.id)
         return transaction_list
 
     def select_user(self, x=-2):
@@ -352,6 +357,7 @@ class MySQLConnector:
             user_model.remember_token = r[8]
             user_list.append(user_model)
         db.close()
+        user_list.sort(key=lambda x: x.id)
         return user_list
 
     def update_last_forklift(self, x=-2):
