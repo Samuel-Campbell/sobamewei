@@ -33,7 +33,7 @@ class MySQLConnector:
             sys.exit(1)
         db.close()
 
-    def select_electronic_item(self, x):
+    def select_electronic_item(self, x=-2):
         electronic_item_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -122,7 +122,7 @@ class MySQLConnector:
         db.close()
         return electronic_item_list
 
-    def select_electronic_specification(self,x):
+    def select_electronic_specification(self,x=-2):
         electronic_specification_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -181,7 +181,7 @@ class MySQLConnector:
         db.close()
         return electronic_specification_list
 
-    def select_electronic_type(self,x):
+    def select_electronic_type(self, x=-2):
         electronic_type_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -200,7 +200,7 @@ class MySQLConnector:
         db.close()
         return electronic_type_list
 
-    def select_login_log(self,x):
+    def select_login_log(self, x=-2):
         login_log_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -239,7 +239,7 @@ class MySQLConnector:
         db.close()
         return login_log_list
 
-    def select_transaction(self,x):
+    def select_transaction(self, x=-2):
         transaction_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -329,7 +329,7 @@ class MySQLConnector:
         db.close()
         return transaction_list
 
-    def select_user(self,x):
+    def select_user(self, x=-2):
         user_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -353,7 +353,7 @@ class MySQLConnector:
         db.close()
         return user_list
 
-    def update_last_forklift(self):
+    def update_last_forklift(self, x=-2):
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
         cursor.execute("update ElectronicItem set last_forklift_or_change_check = 1")
