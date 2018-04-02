@@ -34,6 +34,8 @@ class ElectronicItem:
             self.user_id == other.user_id and \
             self.expiryForUser == other.expiryForUser
 
+    def __hash__(self):
+        return self.id
 
 class ElectronicSpecification:
     def __init__(self):
@@ -117,6 +119,9 @@ class ElectronicSpecification:
             self.displaySize == other.displaySize and \
             self.image == other.image
 
+    def __hash__(self):
+        return self.id
+
 class ElectronicType:
     def __init__(self):
         self.id = None
@@ -145,6 +150,9 @@ class ElectronicType:
             self.dimensionUnit == other.dimensionUnit and \
             self.screenSizeUnit == other.screenSizeUnit
 
+    def __hash__(self):
+        return self.id
+
 class LoginLog:
     def __init__(self):
         self.id = None
@@ -171,6 +179,8 @@ class LoginLog:
             self.timestamp == other.timestamp and \
             self.User_id == other.User_id
 
+    def __hash__(self):
+        return self.id
 
 class Transaction:
     def __init__(self):
@@ -212,6 +222,8 @@ class Transaction:
             self.timestamp == other.timestamp and \
             self.customer_id == other.customer_id
 
+    def __hash__(self):
+        return self.id
 
 class User:
     def __init__(self):
@@ -260,3 +272,6 @@ class User:
             self.physicalAddress == other.physicalAddress and \
             self.password == other.password and \
             self.remember_token == other.remember_token
+
+    def __hash__(self):
+        return self.id

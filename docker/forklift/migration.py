@@ -1,8 +1,7 @@
 from database.mongodb import mongodb, electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
-    login_log_tdg, transaction_tdg
+    login_log_tdg, transaction_tdg, user_tdg
 from database.mysql.mysql import MySQLConnector, MySQLTableEnum
 
-from database.mongodb import user_tdg
 
 if __name__ == '__main__':
     print("Performing data migration from MySQL to MongoDB")
