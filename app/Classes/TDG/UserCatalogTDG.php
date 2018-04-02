@@ -29,6 +29,8 @@ class UserCatalogTDG {
         $this->db = $mongoClient->conushop;
         //get the users collection
         $this->list_users= $this->db->User;
+        //get the log entries collection
+        $this->list_logs= $this->db->LoginLog;
 
 //        // Get the users collection
 //        $list_users = $db->User;
@@ -176,7 +178,7 @@ class UserCatalogTDG {
     }
     //Set Soft deltee for user transaction
     public function deleteUserTransaction($userId){
-        $queryString = 'DELETE  Transaction ';
+        $queryString = 'UPDATE  Transaction ';
         $queryString = 'WHERE last_forklift_or_change_check = -1';
         $queryString .= 'customer_id' . ' = :' . 'customer_id';
 
