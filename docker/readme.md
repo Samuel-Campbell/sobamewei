@@ -5,7 +5,6 @@
 3) pymongo
     1. pip install pymongo
 4) MongoDb
-5) Environement variables: host, password, database
 
 ### Running the script
 1) cd /sobamewei/docker/forklift
