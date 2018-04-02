@@ -30,10 +30,10 @@ class ConsistencyChecker:
                 ConsistencyChecker.__delete(model, key)
 
             inconsistent_count += len(update_set) + len(delete_set)
-        inconsistent_ratio = (data_length - inconsistent_count) / data_length
+        inconsistent_ratio = (data_length - inconsistent_count) / data_length * 100
         if log:
-            f = open(self.log_directory, 'a')
-            f.write("Inconsistent ratio: {}".format(inconsistent_ratio))
+            f = open(self.log_directory + 'log.txt', 'a')
+            f.write("Consistent ratio: {}\n".format(inconsistent_ratio))
             f.close()
         return inconsistent_ratio
 
