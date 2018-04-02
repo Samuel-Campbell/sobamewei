@@ -63,6 +63,7 @@ class ElectronicCatalogTDG {
 
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
+        $queryString .= ', last_forklift_or_change_check = 0';
         return $this->conn->query($queryString, $parameters);
     }
 
@@ -85,6 +86,7 @@ class ElectronicCatalogTDG {
         }
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
+        $queryString .= ", last_forklift_or_change_check = 0";
         return $this->conn->query($queryString, $parameters);
     }
 
@@ -111,10 +113,11 @@ class ElectronicCatalogTDG {
             }
         }
 
-        //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
+        //2 is indicative of modified
+        $queryString .= "last_forklift_or_change_check = 2";
 
         $queryString .= ' WHERE id = :id';
+
         return $this->conn->query($queryString, $parameters);
     }
 
@@ -140,7 +143,7 @@ class ElectronicCatalogTDG {
         foreach ($objectData as $key => $value) {
             if (is_array($objectData[$key]) || is_null($objectData[$key])) {
                 unset($objectData[$key]);
-        }
+            }
         }
 
         $parameters = (object) $objectData;
@@ -154,7 +157,7 @@ class ElectronicCatalogTDG {
         }
 
         //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
+        $queryString .= "last_forklift_or_change_check = 0";
 
         return $this->conn->query($queryString, $parameters);
     }

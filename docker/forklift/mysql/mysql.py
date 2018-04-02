@@ -1,8 +1,19 @@
 import MySQLdb
-import os
 import sys
-import models
+from models import models
 import time
+
+
+class MySQLTableEnum:
+    ElectronicItem = 1
+    ElectronicSpecification = 2
+    ElectronicType = 3
+    Transaction = 4
+    LoginLog = 5
+    User = 6
+
+    def __init__(self):
+        pass
 
 
 class MySQLConnector:
@@ -23,11 +34,11 @@ class MySQLConnector:
             sys.exit(1)
         db.close()
 
-    def select_electronic_item(self):
+    def select_electronic_item(self, x=-2):
         electronic_item_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
-        query = """SELECT 
+        query = """SELECT
         ElectronicItem.id,
         ElectronicSpecification.id,
         ElectronicSpecification.dimension,
@@ -49,7 +60,7 @@ class MySQLConnector:
         ElectronicType.screenSizeUnit,
         ElectronicSpecification.displaySize,
         ElectronicSpecification.image,
-        ElectronicItem.serialNumber,        
+        ElectronicItem.serialNumber,
         User.id,
         User.firstName,
         User.lastName,
@@ -59,11 +70,13 @@ class MySQLConnector:
         User.physicalAddress,
         User.password,
         User.remember_token,
-        ElectronicItem.expiryForUser 
+        ElectronicItem.expiryForUser
         FROM ElectronicItem
         INNER JOIN ElectronicSpecification on ElectronicItem.ElectronicSpecification_id = ElectronicSpecification.id
         INNER JOIN User on ElectronicItem.User_id = User.id
         INNER JOIN ElectronicType on ElectronicSpecification.ElectronicType_id = ElectronicType.id"""
+        if x == 0:
+            query = query + "\nWHERE ElectronicItem.last_forklift_or_change_check in (-1,0,2)"
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
@@ -110,11 +123,11 @@ class MySQLConnector:
         db.close()
         return electronic_item_list
 
-    def select_electronic_specification(self):
+    def select_electronic_specification(self,x=-2):
         electronic_specification_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
-        query = """SELECT 
+        query = """SELECT
         ElectronicSpecification.id,
         ElectronicSpecification.dimension,
         ElectronicSpecification.weight,
@@ -137,6 +150,8 @@ class MySQLConnector:
         ElectronicSpecification.image
         FROM ElectronicSpecification
         INNER JOIN ElectronicType on ElectronicSpecification.ElectronicType_id = ElectronicType.id"""
+        if x == 0:
+         query = query + "\nWHERE ElectronicSpecification.last_forklift_or_change_check in (-1,0,2)"
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
@@ -167,11 +182,13 @@ class MySQLConnector:
         db.close()
         return electronic_specification_list
 
-    def select_electronic_type(self):
+    def select_electronic_type(self, x=-2):
         electronic_type_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
         query = "SELECT * FROM ElectronicType"
+        if x == 1:
+            query = query + "\nWHERE ElectronicType.last_forklift_or_change_check in (-1,0,2)"
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
@@ -184,7 +201,7 @@ class MySQLConnector:
         db.close()
         return electronic_type_list
 
-    def select_login_log(self):
+    def select_login_log(self, x=-2):
         login_log_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
@@ -199,7 +216,7 @@ class MySQLConnector:
         User.admin,
         User.physicalAddress,
         User.password,
-        User.remember_token        
+        User.remember_token
         FROM LoginLog
         INNER JOIN User ON LoginLog.User_id = User.id"""
         cursor.execute(query)
@@ -223,11 +240,11 @@ class MySQLConnector:
         db.close()
         return login_log_list
 
-    def select_transaction(self):
+    def select_transaction(self, x=-2):
         transaction_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
-        query = """SELECT 
+        query = """SELECT
         Transaction.id,
         ElectronicSpecification.id,
         ElectronicSpecification.dimension,
@@ -265,6 +282,7 @@ class MySQLConnector:
         INNER JOIN ElectronicSpecification ON Transaction.ElectronicSpec_id = ElectronicSpecification.id
         INNER JOIN ElectronicType ON ElectronicSpecification.ElectronicType_id = ElectronicType.id
         INNER JOIN User ON Transaction.customer_id = User.id"""
+
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
@@ -312,11 +330,13 @@ class MySQLConnector:
         db.close()
         return transaction_list
 
-    def select_user(self):
+    def select_user(self, x=-2):
         user_list = []
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
         query = "SELECT * FROM User"
+        if x in (-1,0,2):
+           query = query + "\nWHERE User.last_forklift_or_change_check in (-1,0,2)"
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
@@ -334,14 +354,18 @@ class MySQLConnector:
         db.close()
         return user_list
 
-    def update_last_forklift(self):
+    def update_last_forklift(self, x=-2):
         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
         cursor = db.cursor()
-        cursor.execute("update ElectronicItem set last_forklift_or_change_check = %s", [time.time()])
-        cursor.execute("update ElectronicSpecification set last_forklift_or_change_check = %s", [time.time()])
-        cursor.execute("update ElectronicType set last_forklift_or_change_check = %s", [time.time()])
-        cursor.execute("update LoginLog set last_forklift_or_change_check = %s", [time.time()])
-        cursor.execute("update Transaction set last_forklift_or_change_check = %s", [time.time()])
-        cursor.execute("update User set last_forklift_or_change_check = %s", [time.time()])
+        cursor.execute("update ElectronicItem set last_forklift_or_change_check = 1")
+        cursor.execute("update ElectronicSpecification set last_forklift_or_change_check = 1")
+        cursor.execute("update ElectronicType set last_forklift_or_change_check = 1")
+        cursor.execute("update LoginLog set last_forklift_or_change_check = 1")
+        cursor.execute("update Transaction set last_forklift_or_change_check = 1")
+        cursor.execute("update User set last_forklift_or_change_check = 1")
         db.commit()
         db.close()
+
+    def select_items_changed(self):
+         db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.password, db=self.database)
+         cursor = db.cursor()
