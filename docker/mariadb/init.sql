@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `conushop`.`User` (
   `physicalAddress` VARCHAR(255) NULL,
   `password` VARCHAR(255) NULL,
   `remember_token` VARCHAR(100) NULL,
-  `last_forklift_or_change_check` INT(11) NULL,
+  `last_forklift_or_change_check` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `conushop`.`Transaction` (
   `serialNumber` VARCHAR(45) NULL,
   `timestamp` VARCHAR(45) NULL, 
   `customer_id` INT NULL,
-  `last_forklift_or_change_check` INT(11) NULL,
+  `last_forklift_or_change_check` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_Electronic_Spec2_idx` (`ElectronicSpec_id` ASC),
   INDEX `fk_ElectronicItem_User2_idx` (`customer_id` ASC),
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `conushop`.`ElectronicType` (
   `name` VARCHAR(45) NULL,
   `dimensionUnit` VARCHAR(45) NULL,
   `screenSizeUnit` VARCHAR(45) NULL,
-  `last_forklift_or_change_check` INT(11) NULL,
+  `last_forklift_or_change_check` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `conushop`.`ElectronicSpecification` (
   `ElectronicType_id` INT NULL,
   `displaySize` DOUBLE(5,1) NULL,
   `image` VARCHAR(45) NULL,
-  `last_forklift_or_change_check` INT(11) NULL,
+  `last_forklift_or_change_check` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_Electronic_ElectronicType_idx` (`ElectronicType_id` ASC),
   CONSTRAINT `fk_Electronic_ElectronicType`
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `conushop`.`ElectronicItem` (
   `serialNumber` VARCHAR(45) NULL,
   `User_id` INT NULL,
   `expiryForUser` DATETIME NULL,
-  `last_forklift_or_change_check` INT(11) NULL,
+  `last_forklift_or_change_check` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_Item_Electronic1_idx` (`ElectronicSpecification_id` ASC),
   INDEX `fk_ElectronicItem_User1_idx` (`User_id` ASC),
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `conushop`.`LoginLog` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `timestamp` DATETIME NULL,
   `User_id` INT NOT NULL,
-  `last_forklift_or_change_check` INT(11) NULL,
+  `last_forklift_or_change_check` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_LoginLog_User1_idx` (`User_id` ASC),
   CONSTRAINT `fk_LoginLog_User1`
