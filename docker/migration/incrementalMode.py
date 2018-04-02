@@ -1,16 +1,17 @@
-from database.mongodb import mongodb, electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
+import time
+from database.mongodb import electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
     login_log_tdg, transaction_tdg, user_tdg
 from database.mysql.mysql import MySQLConnector, MySQLTableEnum
 from consistency_checker.consistency_checker import ConsistencyChecker
 
 
 def mysql_dictionary():
-    electronic_item_list = mysql_connector.select_electronic_item()
-    electronic_specification_list = mysql_connector.select_electronic_specification()
-    electronic_type_list = mysql_connector.select_electronic_type()
-    login_log_list = mysql_connector.select_login_log()
-    transaction_list = mysql_connector.select_transaction()
-    user_list = mysql_connector.select_user()
+    electronic_item_list = mysql_connector.select_electronic_item(0)
+    electronic_specification_list = mysql_connector.select_electronic_specification(0)
+    electronic_type_list = mysql_connector.select_electronic_type(0)
+    login_log_list = mysql_connector.select_login_log(0)
+    transaction_list = mysql_connector.select_transaction(0)
+    user_list = mysql_connector.select_user(0)
 
     mysql_dict = {
         MySQLTableEnum.User: user_list,
@@ -65,25 +66,20 @@ def insert_into_mongodb(mysql_dict):
 
 
 if __name__ == '__main__':
-    print("Performing data migration from MySQL to MongoDB")
     mysql_connector = MySQLConnector()
+    while True:
+        # select all form mysql
+        mysql_dict = mysql_dictionary()
 
-    # truncate mongodb
-    mongodb.MongoDbConnector().reset()
+        # insert new data
+        insert_into_mongodb(mysql_dict)
+        # collect inserted data for consistency check
+        mongodb_dict = mongodb_dictionary()
 
-    # select all form mysql
-    mysql_dict = mysql_dictionary()
+        # consistency check
+        ConsistencyChecker().check_database_consistency(mysql_dict, mongodb_dict, log=True)
 
-    # insert new data
-    insert_into_mongodb(mysql_dict)
+        # perform update in mysql
+        mysql_connector.update_last_forklift()
 
-    # collect inserted data for consistency check
-    mongodb_dict = mongodb_dictionary()
-
-    # consistency check
-    ConsistencyChecker().check_consistency(mysql_dict, mongodb_dict, log=True)
-    print('Consistency Checking Complete!')
-
-    # update mysql to indicate forklift
-    mysql_connector.update_last_forklift()
-    print('Migration Complete!')
+        time.sleep(300)

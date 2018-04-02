@@ -1,13 +1,13 @@
-from mongodb import mongodb, electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
-    user_tdg, login_log_tdg, transaction_tdg
-from mysql.mysql import MySQLConnector
 import time
+from database.mongodb import electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
+    login_log_tdg, transaction_tdg
+from database.mysql.mysql import MySQLConnector
+
+from database.mongodb import user_tdg
 
 if __name__ == '__main__':
-
+    mysql_connector = MySQLConnector()
     while True:
-        mysql_connector = MySQLConnector()
-
         electronic_item_list = mysql_connector.select_electronic_item(0)
         electronic_specification_list = mysql_connector.select_electronic_specification(0)
         electronic_type_list = mysql_connector.select_electronic_type(0)

@@ -15,6 +15,17 @@ class ElectronicItem:
             'expiryForUser': self.expiryForUser
         }
 
+    def objectify(self, dictionary):
+        self.id = dictionary['id']
+        electronic_specification_model = ElectronicSpecification()
+        electronic_specification_model.objectify(dictionary['ElectronicSpecification_id'])
+        self.ElectronicSpecification_id = electronic_specification_model
+        self.serialNumber = dictionary['serialNumber']
+        user_model = User()
+        user_model.objectify(dictionary['user_id'])
+        self.user_id = user_model
+        self.expiryForUser = dictionary['expiryForUser']
+
     def __eq__(self, other):
         return \
             self.id == other.id and \
@@ -23,6 +34,8 @@ class ElectronicItem:
             self.user_id == other.user_id and \
             self.expiryForUser == other.expiryForUser
 
+    def __hash__(self):
+        return self.id
 
 class ElectronicSpecification:
     def __init__(self):
@@ -65,6 +78,27 @@ class ElectronicSpecification:
             'image': self.image
         }
 
+    def objectify(self, dictionary):
+        self.id = dictionary['id']
+        self.dimension = dictionary['dimension']
+        self.weight = dictionary['weight']
+        self.modelNumber = dictionary['modelNumber']
+        self.brandName = dictionary['brandName']
+        self.hdSize = dictionary['hdSize']
+        self.price = dictionary['price']
+        self.processorType = dictionary['processorType']
+        self.ramSize = dictionary['ramSize']
+        self.cpuCores = dictionary['cpuCores']
+        self.batteryInfo = dictionary['batteryInfo']
+        self.os = dictionary['os']
+        self.camera = dictionary['camera']
+        self.touchScreen = dictionary['touchScreen']
+        electronic_type_model = ElectronicType()
+        electronic_type_model.objectify(dictionary['ElectronicType_id'])
+        self.ElectronicType_id = electronic_type_model
+        self.displaySize = dictionary['displaySize']
+        self.image = dictionary['image']
+
     def __eq__(self, other):
         return \
             self.id == other.id and \
@@ -85,6 +119,9 @@ class ElectronicSpecification:
             self.displaySize == other.displaySize and \
             self.image == other.image
 
+    def __hash__(self):
+        return self.id
+
 class ElectronicType:
     def __init__(self):
         self.id = None
@@ -100,12 +137,21 @@ class ElectronicType:
             'screenSizeUnit': self.screenSizeUnit
         }
 
+    def objectify(self, dictionary):
+        self.id = dictionary['id']
+        self.name = dictionary['name']
+        self.dimensionUnit = dictionary['dimensionUnit']
+        self.screenSizeUnit = dictionary['screenSizeUnit']
+
     def __eq__(self, other):
         return \
             self.id == other.id and \
             self.name == other.name and \
             self.dimensionUnit == other.dimensionUnit and \
             self.screenSizeUnit == other.screenSizeUnit
+
+    def __hash__(self):
+        return self.id
 
 class LoginLog:
     def __init__(self):
@@ -120,12 +166,21 @@ class LoginLog:
             'User_id': self.User_id.jsonify()
         }
 
+    def objectify(self, dictionary):
+        self.id = dictionary['id']
+        self.timestamp = dictionary['timestamp']
+        user_model = User()
+        user_model.objectify(dictionary['User_id'])
+        self.User_id = user_model
+
     def __eq__(self, other):
         return \
             self.id == other.id and \
             self.timestamp == other.timestamp and \
             self.User_id == other.User_id
 
+    def __hash__(self):
+        return self.id
 
 class Transaction:
     def __init__(self):
@@ -146,6 +201,18 @@ class Transaction:
             'customer_id': self.customer_id.jsonify()
         }
 
+    def objectify(self, dictionary):
+        self.id = dictionary['id']
+        electronic_specification_model = ElectronicSpecification()
+        electronic_specification_model.objectify(dictionary['ElectronicSpec_id'])
+        self.ElectronicSpec_id = electronic_specification_model
+        self.item_id = dictionary['item_id']
+        self.serialNumber = dictionary['serialNumber']
+        self.timestamp = dictionary['timestamp']
+        user_model = User()
+        user_model.objectify(dictionary['customer_id'])
+        self.customer_id = user_model
+
     def __eq__(self, other):
         return \
             self.id == other.id and \
@@ -155,6 +222,8 @@ class Transaction:
             self.timestamp == other.timestamp and \
             self.customer_id == other.customer_id
 
+    def __hash__(self):
+        return self.id
 
 class User:
     def __init__(self):
@@ -181,6 +250,17 @@ class User:
             'remember_token': self.remember_token
         }
 
+    def objectify(self, dictionary):
+        self.id = dictionary['id']
+        self.firstName = dictionary['firstName']
+        self.lastName = dictionary['lastName']
+        self.email = dictionary['email']
+        self.phone = dictionary['phone']
+        self.admin = dictionary['admin']
+        self.physicalAddress = dictionary['physicalAddress']
+        self.password = dictionary['password']
+        self.remember_token = dictionary['remember_token']
+
     def __eq__(self, other):
         return \
             self.id == other.id and \
@@ -192,3 +272,6 @@ class User:
             self.physicalAddress == other.physicalAddress and \
             self.password == other.password and \
             self.remember_token == other.remember_token
+
+    def __hash__(self):
+        return self.id
