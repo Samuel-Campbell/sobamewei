@@ -75,7 +75,7 @@ class UserCatalogTDG {
     public function findAll() {
 
         //MySQL
-        $queryString = 'SELECT * FROM User';
+        //$queryString = 'SELECT * FROM User';
 
         //MongoDB
         $userList = array();
@@ -95,11 +95,9 @@ class UserCatalogTDG {
             $tempUser->objectId = (string)$user["_id"];
             array_push($userList,$tempUser);
         }
-        foreach($userList as $temp){
-            var_dump($temp);
-        }
 
-        $userDataList = $this->conn->directQuery($queryString);
+
+        $userDataList = $userList;//$this->conn->directQuery($queryString);
 
         return $userDataList;
     }
@@ -134,7 +132,12 @@ class UserCatalogTDG {
         $query = array('email' => $email);
         $cursor = $this->list_users->find($query);
 
+        $mongoPassword = "";
 
+        foreach($cursor as $doc){
+            $mongoPassword = $doc['password'];
+        }
+        var_dump($mongoPassword);
         /*$this->db->createCollection("testing");
 
         $testCollection = $this->db->testing;
@@ -143,7 +146,7 @@ class UserCatalogTDG {
             $testCollection->insertOne($doc);
         }*/
 
-        $queryString = 'SELECT * FROM User WHERE ';
+       /* $queryString = 'SELECT * FROM User WHERE ';
 
         //For each key, (ex: id, email, etc.), we build the query
         foreach ($parameters as $key => $value) {
@@ -152,12 +155,12 @@ class UserCatalogTDG {
             $queryString .= ' AND ';
         }
         //We delete the last useless ' AND '
-        $queryString = substr($queryString, 0, -5);
+        $queryString = substr($queryString, 0, -5);*/
 
         //We send to MySQLConnection the associative array, to bind values to keys
         //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
-        $array = $this->conn->query($queryString, $parameters);
-        if (count($array) > 0 && Hash::check($password, $array[0]->password)) {
+       // $array = $this->conn->query($queryString, $parameters);
+        if ( Hash::check($password, $mongoPassword)) {
             return true;
         } else {
             return false;
