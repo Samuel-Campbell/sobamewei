@@ -26,6 +26,9 @@ class ConsistencyChecker:
         """
         if not(old_model == new_model):
             ConsistencyChecker.__update(old_model, table)
+            f = open(self.log_directory + 'log.txt', 'a')
+            f.write("Inconsistent model found\n")
+            f.close()
 
     def check_database_consistency(self, old_db, new_db, log=False):
         """

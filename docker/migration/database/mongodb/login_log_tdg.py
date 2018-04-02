@@ -8,6 +8,7 @@ class LoginLogTdg(MongoDbConnector):
 
     def insert(self, model):
         self.client[self.database]['LoginLog'].insert_one(model.jsonify())
+        return self.select_one(model)
 
     def select(self):
         model_list = []
