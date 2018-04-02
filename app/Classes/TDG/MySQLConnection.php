@@ -21,7 +21,13 @@ class MySQLConnection {
     public function query($query, $bindValues) {
         $localConn = $this->conn;
 
+        //verify OS before running script
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+            exec("python ..\..\..\docker\migration\shadow.py $query");
+        else
+            exec("python ../../../docker/migration/shadow.py $query");
         $stmt = $localConn->prepare($query);
+
 
         //We bind the values to make sure we are protected from injections
         foreach ($bindValues as $key => $value) {
@@ -44,6 +50,12 @@ class MySQLConnection {
         $localConn = $this->conn;
 
         $stmt = $localConn->prepare($query);
+
+        //verify OS before running script
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+            exec("python ..\..\..\docker\migration\shadow.py $query");
+        else
+            exec("python ../../../docker/migration/shadow.py $query");
 
         $stmt->execute();
 

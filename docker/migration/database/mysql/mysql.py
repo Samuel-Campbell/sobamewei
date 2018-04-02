@@ -28,7 +28,8 @@ class MySQLConnector:
         except KeyError:
             print("Key Error: Environment variables not correctly set")
             sys.exit(1)
-        except:
+        except Exception,e:
+            print str(e)
             print("Could not connect to the mysql database")
             sys.exit(1)
         db.close()
