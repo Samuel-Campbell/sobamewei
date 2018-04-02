@@ -10,5 +10,5 @@ class ElectronicTypeTdg(MongoDbConnector):
 
     def select(self):
         cursor = self.client[self.database]['ElectronicType'].find()
-        for c in cursor:
-            print(c)
+        for row in cursor:
+            print(row)
