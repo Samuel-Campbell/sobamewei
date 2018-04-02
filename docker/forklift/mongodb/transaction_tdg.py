@@ -18,3 +18,11 @@ class TransactionTdg(MongoDbConnector):
             model_list.append(model)
         model_list.sort(key=lambda x: x.id)
         return model_list
+
+    def update(self, model):
+        key = {'id': model.id}
+        self.client[self.database]['Transaction'].update_one(key, {'$set': model.jsonify()}, upsert=True)
+
+    def delete(self, model):
+        key = {'id': model.id}
+        self.client[self.database]['Transaction'].delete_one(key)
