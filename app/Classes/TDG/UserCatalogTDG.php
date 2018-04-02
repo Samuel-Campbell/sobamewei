@@ -3,7 +3,7 @@
 namespace App\Classes\TDG;
 require __DIR__ . '/../../../vendor/autoload.php';
 require __DIR__ . '/../../../vendor/mongodb/mongodb/src/Client.php';
-
+require __DIR__ . '/../../../vendor/mongodb/mongodb/src/Model/BSONArray.php';
 
 //\vendor\mongodb\mongodb\src\Client.php;
 use Hash;
@@ -48,6 +48,14 @@ class UserCatalogTDG {
      */
     public function find($parameters) {
 
+        $user = array();
+        $cursor = $this->list_users->find($parameters);
+
+        foreach ($cursor as $doc) {
+
+        }
+
+
         $queryString = 'SELECT id, firstname, lastName, email, phone, admin, physicalAddress, password FROM User WHERE ';
 
         //For each key, (ex: id, email, etc.), we build the query
@@ -57,7 +65,7 @@ class UserCatalogTDG {
             $queryString .= ' AND ';
         }
         //We delete the last useless ' AND '
-        $queryString = substr($queryString, 0, -5);
+        $queryString .= 'WHERE last_forklift_or_change_check = 2';
 
         //We send to MySQLConnection the associative array, to bind values to keys
         //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
@@ -66,7 +74,30 @@ class UserCatalogTDG {
 
     public function findAll() {
 
+        //MySQL
         $queryString = 'SELECT * FROM User';
+
+        //MongoDB
+        $userList = array();
+
+        $query = array();
+        $cursor = $this->list_users->find();
+        $array = iterator_to_array($cursor);
+        foreach($array as $user){
+            $tempUser = new \stdClass();
+            $tempUser->firstName = $user["firstName"];
+            $tempUser->lastName = $user["lastName"];
+            $tempUser->email = $user["email"];
+            $tempUser->phone = $user["phone"];
+            $tempUser->admin = $user ["admin"];
+            $tempUser->physicalAddress = $user["physicalAddress"];
+            $tempUser->password = $user["password"];
+            $tempUser->objectId = (string)$user["_id"];
+            array_push($userList,$tempUser);
+        }
+        foreach($userList as $temp){
+            var_dump($temp);
+        }
 
         $userDataList = $this->conn->directQuery($queryString);
 
@@ -90,14 +121,28 @@ class UserCatalogTDG {
         }
 
         //We delete the last useless ' , '
-        $queryString = " last_forklift_or_change_check = 0";
+        $queryString .= " last_forklift_or_change_check = 0";
 
         return $this->conn->query($queryString, $parameters);
     }
 
     public function login($email, $password) {
+
         $parameters = new \stdClass();
         $parameters->email = $email;
+
+        $query = array('email' => $email);
+        $cursor = $this->list_users->find($query);
+
+
+        /*$this->db->createCollection("testing");
+
+        $testCollection = $this->db->testing;
+        foreach ($cursor as $doc) {
+
+            $testCollection->insertOne($doc);
+        }*/
+
         $queryString = 'SELECT * FROM User WHERE ';
 
         //For each key, (ex: id, email, etc.), we build the query
@@ -144,7 +189,7 @@ class UserCatalogTDG {
         }
 
         //We delete the last useless ' , '
-        $queryString = " last_forklift_or_change_check = 0";
+        $queryString .= 'last_forklift_or_change_check = 0';
 
         return $this->conn->query($queryString, $parameters);
     }
@@ -179,7 +224,7 @@ class UserCatalogTDG {
     //Set Soft deltee for user transaction
     public function deleteUserTransaction($userId){
         $queryString = 'UPDATE  Transaction ';
-        $queryString = 'WHERE last_forklift_or_change_check = -1';
+        $queryString .= 'WHERE last_forklift_or_change_check = -1';
         $queryString .= 'customer_id' . ' = :' . 'customer_id';
 
         $parameters = new \stdClass();
