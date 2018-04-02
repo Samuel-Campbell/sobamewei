@@ -4,6 +4,18 @@ from models import models
 import time
 
 
+class MySQLTableEnum:
+    ElectronicItem = 1
+    ElectronicSpecification = 2
+    ElectronicType = 3
+    Transaction = 4
+    LoginLog = 5
+    User = 6
+
+    def __init__(self):
+        pass
+
+
 class MySQLConnector:
     database = 'conushop'
     user = 'root'
