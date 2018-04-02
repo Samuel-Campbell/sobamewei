@@ -58,7 +58,7 @@ class UserCatalogTDG {
         }
 
         //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
+        $queryString = " last_forklift_or_change_check = 0";
 
         return $this->conn->query($queryString, $parameters);
     }
@@ -109,16 +109,18 @@ class UserCatalogTDG {
         }
 
         //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
+        $queryString = " last_forklift_or_change_check = 0";
 
 
         return $this->conn->query($queryString, $parameters);
     }
 
+    //soft Delete for migration to MongoDB
     public function deleteUser($user){
 
-        $queryString = 'DELETE FROM User WHERE ';
-        $queryString .= 'id' . ' = :' . 'id';
+        $queryString = 'UPDATE  User  ';
+        $queryString .= 'SET last_forklift_or_change_check = -1 ';
+        $queryString .= ' WHERE id' . ' = :' . 'id';
 
         $parameters = new \stdClass();
         $parameters->id = $user->get()->id;
@@ -126,20 +128,21 @@ class UserCatalogTDG {
         return $this->conn->query($queryString, $parameters);
 
     }
-
+    //Change delete to UPDATE for migration purposes
     public function deleteLoginLog($userId) {
 
-          $queryString = 'DELETE FROM LoginLog WHERE ';
-          $queryString .= 'User_id' . ' = :' . 'User_id';
+        $queryString = 'UPDATE  LoginLog  ';
+        $queryString .= 'SET last_forklift_or_change_check = -1';
+        $queryString .= 'WHERE User_id' . ' = :' . 'User_id';
 
-          $parameters = new \stdClass();
-          $parameters->User_id = $userId;
+        $parameters = new \stdClass();
+        $parameters->User_id = $userId;
 
-          return $this->conn->query($queryString, $parameters);
+        return $this->conn->query($queryString, $parameters);
     }
-
+    //Set Soft deltee for user transaction
     public function deleteUserTransaction($userId){
-        $queryString = 'DELETE FROM Transaction WHERE ';
+        $queryString = 'DELETE  Transaction ';
         $queryString .= 'customer_id' . ' = :' . 'customer_id';
 
         $parameters = new \stdClass();
