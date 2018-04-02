@@ -71,6 +71,7 @@ def run():
 
     # insert new data
     insert_into_mongodb(mysql_dict)
+
     # collect inserted data for consistency check
     mongodb_dict = mongodb_dictionary()
 
