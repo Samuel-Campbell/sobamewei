@@ -63,6 +63,7 @@ class ElectronicCatalogTDG {
 
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
+        $queryString .= ', last_forklift_or_change_check = 0';
         return $this->conn->query($queryString, $parameters);
     }
 
@@ -85,11 +86,15 @@ class ElectronicCatalogTDG {
         }
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
+        $queryString .= ", last_forklift_or_change_check = 0";
         return $this->conn->query($queryString, $parameters);
     }
+
+    //set soft delete in OLD database (MySQL)
     public function deleteElectronicItem($electronicItem) {
-        $queryString = 'DELETE FROM ElectronicItem WHERE ';
-        $queryString .= 'id' . ' = :' . 'id';
+        $queryString = 'UPDATE ElectronicItem ';
+        $queryString .= 'SET last_forklift_or_change_check = -1 ';
+        $queryString .= ' WHERE id' . ' = :' . 'id';
 
         $parameters = new \stdClass();
         $parameters->id = $electronicItem->get()->id;
@@ -137,7 +142,7 @@ class ElectronicCatalogTDG {
         foreach ($objectData as $key => $value) {
             if (is_array($objectData[$key]) || is_null($objectData[$key])) {
                 unset($objectData[$key]);
-        }
+            }
         }
 
         $parameters = (object) $objectData;
