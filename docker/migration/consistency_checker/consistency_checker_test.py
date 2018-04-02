@@ -25,5 +25,5 @@ class TestConsistencyChecker(unittest.TestCase):
         }
 
         cc = ConsistencyChecker()
-        result = cc.check_consistency(mock_old_db, mock_new_db)
+        result = cc.check_database_consistency(mock_old_db, mock_new_db)
         self.assertTrue(result == 100)

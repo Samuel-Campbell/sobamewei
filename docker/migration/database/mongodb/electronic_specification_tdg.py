@@ -19,6 +19,13 @@ class ElectronicSpecificationTdg(MongoDbConnector):
         model_list.sort(key=lambda x: x.id)
         return model_list
 
+    def select_one(self, model):
+        key = {'id': model.id}
+        row = self.client[self.database]['ElectronicSpecification'].find_one(key)
+        model = ElectronicSpecification()
+        model.objectify(row)
+        return model
+
     def update(self, model):
         key = {'id': model.id}
         self.client[self.database]['ElectronicSpecification'].update_one(key, {'$set': model.jsonify()}, upsert=True)

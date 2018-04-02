@@ -12,7 +12,49 @@ class ConsistencyChecker:
     def __init__(self):
         pass
 
-    def check_consistency(self, old_db, new_db, log=False):
+    def check_model_consistency(self, old_model, new_model, table):
+        """
+        Evaluates a single model from mysql with a single model from mongodb.
+
+        If models aren't equal then update the one from mongodb. Same thing applies
+        if the model is absent from mongodb
+
+        :param old_model: models.models
+        :param new_model: models.models
+        :param table: MySQLTableEnum (1 - 6)
+        :return: None
+        """
+        if not(old_model == new_model):
+            ConsistencyChecker.__update(old_model, table)
+
+    def check_database_consistency(self, old_db, new_db, log=False):
+        """
+        Compares mysql database with the mongodb. Any difference or
+        inconsistency is taken care of.
+
+        The set difference of the old_db and the new_db are the values to be updated
+        in the new db.
+
+        The set difference between the new_db and the old_db are the values to be deleted
+        from the new db
+
+        :param old_db: {
+                MySQLTableEnum: [
+                    models.models,
+                    models.models,
+                    ...
+                ]
+            }
+        :param new_db: {
+                MySQLTableEnum: [
+                    models.models,
+                    models.models,
+                    ...
+                ]
+            }
+        :param log: boolean
+        :return: integer (percentage of consistency)
+        """
         inconsistent_count = 0
         data_length = 0
 

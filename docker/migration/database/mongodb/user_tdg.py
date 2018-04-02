@@ -19,6 +19,13 @@ class UserTdg(MongoDbConnector):
         model_list.sort(key=lambda x: x.id)
         return model_list
 
+    def select_one(self, model):
+        key = {'id': model.id}
+        row = self.client[self.database]['User'].find_one(key)
+        model = User()
+        model.objectify(row)
+        return model
+
     def update(self, model):
         key = {'id': model.id}
         self.client[self.database]['User'].update_one(key, {'$set': model.jsonify()}, upsert=True)

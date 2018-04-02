@@ -19,6 +19,13 @@ class LoginLogTdg(MongoDbConnector):
         model_list.sort(key=lambda x: x.id)
         return model_list
 
+    def select_one(self, model):
+        key = {'id': model.id}
+        row = self.client[self.database]['LoginLog'].find_one(key)
+        model = LoginLog()
+        model.objectify(row)
+        return model
+
     def update(self, model):
         key = {'id': model.id}
         self.client[self.database]['LoginLog'].update_one(key, {'$set': model.jsonify()}, upsert=True)

@@ -81,7 +81,7 @@ if __name__ == '__main__':
     mongodb_dict = mongodb_dictionary()
 
     # consistency check
-    ConsistencyChecker().check_consistency(mysql_dict, mongodb_dict, log=True)
+    ConsistencyChecker().check_database_consistency(mysql_dict, mongodb_dict, log=True)
     print('Consistency Checking Complete!')
 
     # update mysql to indicate forklift
