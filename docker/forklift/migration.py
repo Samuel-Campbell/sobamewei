@@ -1,12 +1,13 @@
-from mysql import MySQLConnector
-from mongodb import MongoDbConnector
+from mysql.mysql import MySQLConnector, MySQLTableEnum
+from mongodb import mongodb, electornic_type_tdg, electronic_item_tdg, electronic_specification_tdg, \
+    user_tdg, login_log_tdg, transaction_tdg
+from consistency_checker import ConsistencyChecker
 
 
 if __name__ == '__main__':
     print("Performing data migration from MySQL to MongoDB")
 
     mysql_connector = MySQLConnector()
-    mongodb_connector = MongoDbConnector()
 
     electronic_item_list = mysql_connector.select_electronic_item()
     electronic_specification_list = mysql_connector.select_electronic_specification()
@@ -15,26 +16,34 @@ if __name__ == '__main__':
     transaction_list = mysql_connector.select_transaction()
     user_list = mysql_connector.select_user()
 
-    mongodb_connector.reset()
+    mysql_dict = {
+        MySQLTableEnum.User: user_list,
+        MySQLTableEnum.Transaction: transaction_list,
+        MySQLTableEnum.LoginLog: login_log_list,
+        MySQLTableEnum.ElectronicType: electronic_type_list,
+        MySQLTableEnum.ElectronicSpecification: electronic_specification_list,
+        MySQLTableEnum.ElectronicItem: electronic_item_list
+    }
+
+    mongodb.MongoDbConnector().reset()
 
     for model in electronic_item_list:
-        mongodb_connector.insert_electronic_item(model)
+        electronic_item_tdg.ElectronicItemTdg().insert(model)
 
     for model in electronic_specification_list:
-        mongodb_connector.insert_electronic_specification(model)
+        electronic_specification_tdg.ElectronicSpecificationTdg().insert(model)
 
     for model in electronic_type_list:
-        mongodb_connector.insert_electronic_type(model)
+        electornic_type_tdg.ElectronicTypeTdg().insert(model)
 
     for model in login_log_list:
-        mongodb_connector.insert_login_log(model)
+        login_log_tdg.LoginLogTdg().insert(model)
 
     for model in transaction_list:
-        mongodb_connector.insert_transaction(model)
+        transaction_tdg.TransactionTdg().insert(model)
 
     for model in user_list:
-        mongodb_connector.insert_user(model)
+        user_tdg.UserTdg().insert(model)
 
     mysql_connector.update_last_forklift()
-
     print('Migration Complete!')

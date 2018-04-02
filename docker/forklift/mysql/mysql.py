@@ -1,8 +1,19 @@
 import MySQLdb
-import os
 import sys
-import models
+from models import models
 import time
+
+
+class MySQLTableEnum:
+    ElectronicItem = 1
+    ElectronicSpecification = 2
+    ElectronicType = 3
+    Transaction = 4
+    LoginLog = 5
+    User = 6
+
+    def __init__(self):
+        pass
 
 
 class MySQLConnector:
@@ -65,7 +76,6 @@ class MySQLConnector:
         INNER JOIN ElectronicType on ElectronicSpecification.ElectronicType_id = ElectronicType.id"""
         if x == 0:
             query = query + "\nWHERE ElectronicItem.last_forklift_or_change_check in (-1,0,2)"
-            print query
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
