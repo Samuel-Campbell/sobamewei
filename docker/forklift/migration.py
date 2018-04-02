@@ -1,4 +1,4 @@
-from mysql import MySQLConnector
+from mysql.mysql import MySQLConnector
 from mongodb.mongodb import MongoDbConnector
 
 

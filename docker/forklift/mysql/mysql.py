@@ -1,7 +1,6 @@
 import MySQLdb
-import os
 import sys
-import models
+from models import models
 import time
 
 
