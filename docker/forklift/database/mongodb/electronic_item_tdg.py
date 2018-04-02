@@ -1,19 +1,19 @@
+from database.models.models import ElectronicItem
 from mongodb import MongoDbConnector
-from models.models import ElectronicType
 
 
-class ElectronicTypeTdg(MongoDbConnector):
+class ElectronicItemTdg(MongoDbConnector):
     def __init__(self):
         MongoDbConnector.__init__(self)
 
     def insert(self, model):
-        self.client[self.database]['ElectronicType'].insert_one(model.jsonify())
+        self.client[self.database]['ElectronicItem'].insert_one(model.jsonify())
 
     def select(self):
         model_list = []
-        cursor = self.client[self.database]['ElectronicType'].find()
+        cursor = self.client[self.database]['ElectronicItem'].find()
         for row in cursor:
-            model = ElectronicType()
+            model = ElectronicItem()
             model.objectify(row)
             model_list.append(model)
         model_list.sort(key=lambda x: x.id)
@@ -21,8 +21,8 @@ class ElectronicTypeTdg(MongoDbConnector):
 
     def update(self, model):
         key = {'id': model.id}
-        self.client[self.database]['ElectronicType'].update_one(key, {'$set': model.jsonify()}, upsert=True)
+        self.client[self.database]['ElectronicItem'].update_one(key, {'$set': model.jsonify()}, upsert=True)
 
     def delete(self, model):
         key = {'id': model.id}
-        self.client[self.database]['ElectronicType'].delete_one(key)
+        self.client[self.database]['ElectronicItem'].delete_one(key)

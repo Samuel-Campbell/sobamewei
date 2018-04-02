@@ -1,7 +1,7 @@
 import MySQLdb
 import sys
-from models import models
-import time
+
+from database.models import models
 
 
 class MySQLTableEnum:

@@ -1,5 +1,5 @@
+from database.models.models import ElectronicSpecification
 from mongodb import MongoDbConnector
-from models.models import ElectronicSpecification
 
 
 class ElectronicSpecificationTdg(MongoDbConnector):

@@ -1,19 +1,19 @@
+from database.models.models import Transaction
 from mongodb import MongoDbConnector
-from models.models import User
 
 
-class UserTdg(MongoDbConnector):
+class TransactionTdg(MongoDbConnector):
     def __init__(self):
         MongoDbConnector.__init__(self)
 
     def insert(self, model):
-        self.client[self.database]['User'].insert_one(model.jsonify())
+        self.client[self.database]['Transaction'].insert_one(model.jsonify())
 
     def select(self):
         model_list = []
-        cursor = self.client[self.database]['User'].find()
+        cursor = self.client[self.database]['Transaction'].find()
         for row in cursor:
-            model = User()
+            model = Transaction()
             model.objectify(row)
             model_list.append(model)
         model_list.sort(key=lambda x: x.id)
@@ -21,8 +21,8 @@ class UserTdg(MongoDbConnector):
 
     def update(self, model):
         key = {'id': model.id}
-        self.client[self.database]['User'].update_one(key, {'$set': model.jsonify()}, upsert=True)
+        self.client[self.database]['Transaction'].update_one(key, {'$set': model.jsonify()}, upsert=True)
 
     def delete(self, model):
         key = {'id': model.id}
-        self.client[self.database]['User'].delete_one(key)
+        self.client[self.database]['Transaction'].delete_one(key)
