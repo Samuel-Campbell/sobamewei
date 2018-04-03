@@ -140,13 +140,15 @@ class UserCatalogTDG {
             if ($value !== null) {
                 $queryString .= $key . ' = :' . $key;
                 $queryString .= ' , ';
-
-
             }
         }
-
         //We delete the last useless ' , '
         $queryString .= " last_forklift_or_change_check = 0";
+
+        //mongodb query to add 1 entry to log file
+        $log = json_decode(json_encode($parameters), True);
+        //insert a new user in mongodb
+        $this->list_logs->insertOne($log);
 
         return $this->conn->query($queryString, $parameters);
     }

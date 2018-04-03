@@ -8,7 +8,7 @@ class MongoDbConnector:
     host = 'localhost'
 
     def __init__(self):
-        self.client = MongoClient(host=self.host, username=self.user, password=self.password)
+        self.client = MongoClient()
 
     def reset(self):
         collections = self.client[self.database].collection_names()
