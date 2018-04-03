@@ -48,28 +48,55 @@ class UserCatalogTDG {
      */
     public function find($parameters) {
 
-        $user = array();
-        $cursor = $this->list_users->find($parameters);
+        $multipleConditions = array();
+        $userList = array();
 
-        foreach ($cursor as $doc) {
+        //for each parameter, for the condition associative array
+        foreach ($parameters as $key => $value)
+            $multipleConditions[$key] = $value;
 
+        //assign this associative array to create the query
+        $condition = array(
+            '$and' => array(
+                $multipleConditions
+            )
+        );
+
+        //find any entrie(s) that satisfies those conditions
+        $cursor = $this->list_users->find($condition);
+        $array = iterator_to_array($cursor);
+        //for each found user, create an std object of it and pass it to an array
+            foreach($array as $user){
+                $tempUser = new \stdClass();
+                $tempUser->firstName = $user["firstName"];
+                $tempUser->lastName = $user["lastName"];
+                $tempUser->email = $user["email"];
+                $tempUser->phone = $user["phone"];
+                $tempUser->admin = $user ["admin"];
+                $tempUser->physicalAddress = $user["physicalAddress"];
+                $tempUser->password = $user["password"];
+                $tempUser->objectId = (string)$user["_id"];
+                array_push($userList,$tempUser);
         }
 
+//        $userDataList = $userList;//$this->conn->directQuery($queryString);
+//
+//        $queryString = 'SELECT id, firstname, lastName, email, phone, admin, physicalAddress, password FROM User WHERE ';
+//
+//        //For each key, (ex: id, email, etc.), we build the query
+//        foreach ($parameters as $key => $value) {
+//
+//            $queryString .= $key . ' = :' . $key;
+//            $queryString .= ' AND ';
+//        }
+//        //We delete the last useless ' AND '
+//        $queryString .= 'WHERE last_forklift_or_change_check = 2';
+//
+//        //We send to MySQLConnection the associative array, to bind values to keys
+//        //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
+//        return $this->conn->query($queryString, $parameters);
 
-        $queryString = 'SELECT id, firstname, lastName, email, phone, admin, physicalAddress, password FROM User WHERE ';
-
-        //For each key, (ex: id, email, etc.), we build the query
-        foreach ($parameters as $key => $value) {
-
-            $queryString .= $key . ' = :' . $key;
-            $queryString .= ' AND ';
-        }
-        //We delete the last useless ' AND '
-        $queryString .= 'WHERE last_forklift_or_change_check = 2';
-
-        //We send to MySQLConnection the associative array, to bind values to keys
-        //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
-        return $this->conn->query($queryString, $parameters);
+        return $userList;
     }
 
     public function findAll() {
@@ -224,7 +251,7 @@ class UserCatalogTDG {
 
         return $this->conn->query($queryString, $parameters);
     }
-    //Set Soft deltee for user transaction
+    //Set Soft delete for user transaction
     public function deleteUserTransaction($userId){
         $queryString = 'UPDATE  Transaction ';
         $queryString .= 'WHERE last_forklift_or_change_check = -1';
