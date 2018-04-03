@@ -251,6 +251,9 @@ class UserCatalogTDG {
         $parameters = new \stdClass();
         $parameters->User_id = $userId;
 
+        //remove a log from mongodb LoginLog collection
+        $deleteResult = $this->list_logs->deleteMany(['User_id' => $userId]);
+
         return $this->conn->query($queryString, $parameters);
     }
     //Set Soft delete for user transaction
