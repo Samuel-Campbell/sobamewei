@@ -62,9 +62,7 @@ def shadow_read():
 if __name__ == '__main__':
     q_type = query_type(sys.argv[1])
     if q_type == QueryTypeEnum.READ:
-        print('reading')
         shadow_read()
     else:
-        print('writing')
         shadow_write()
     MySQLConnector().update_last_forklift()
