@@ -24,7 +24,10 @@ class ElectronicSpecificationTdg(MongoDbConnector):
         key = {'id': model.id}
         row = self.client[self.database]['ElectronicSpecification'].find_one(key)
         model = ElectronicSpecification()
-        model.objectify(row)
+        try:
+            model.objectify(row)
+        except TypeError:
+            pass
         return model
 
     def update(self, model):
