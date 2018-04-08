@@ -24,7 +24,10 @@ class UserTdg(MongoDbConnector):
         key = {'id': model.id}
         row = self.client[self.database]['User'].find_one(key)
         model = User()
-        model.objectify(row)
+        try:
+            model.objectify(row)
+        except TypeError:
+            pass
         return model
 
     def update(self, model):
