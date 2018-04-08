@@ -9,17 +9,17 @@ class MySQLConnection {
     private $conn;
 
     public function __construct() {
-        $connectionString =
+/*        $connectionString =
           'mysql:host=localhost;dbname=conushop;charset=utf8';
         $this->conn = new PDO(
           $connectionString,
           env('DB_USERNAME'),
           env('DB_PASSWORD')
-        );
+        );*/
     }
 
     public function query($query, $bindValues) {
-        $localConn = $this->conn;
+/*        $localConn = $this->conn;
 
         //verify OS before running script
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
@@ -43,11 +43,11 @@ class MySQLConnection {
             return false;
 
             die($e->getMessage());
-        }
+        }*/
     }
 
     public function directQuery($query) {
-        $localConn = $this->conn;
+      /*  $localConn = $this->conn;
 
         $stmt = $localConn->prepare($query);
 
@@ -59,11 +59,11 @@ class MySQLConnection {
 
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);*/
     }
 
     public function getPDOConnection() {
-        return $this->conn;
+    /*    return $this->conn;*/
     }
 
 }

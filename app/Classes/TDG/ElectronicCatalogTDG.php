@@ -28,7 +28,7 @@ class ElectronicCatalogTDG {
         $queryString = 'SELECT * FROM ElectronicSpecification';
         $eSDataList = $this->conn->directQuery($queryString);
         //dd($eSDataList);
-        foreach ($eSDataList as &$eSData) {
+/*        foreach ($eSDataList as &$eSData) {
             //dd($eSData);
             $queryString = 'SELECT * FROM ElectronicItem WHERE ';
             $parameters = array('ElectronicSpecification_id' => $eSData->id);
@@ -44,7 +44,7 @@ class ElectronicCatalogTDG {
             $eIDataList = $this->conn->query($queryString, $parameters);
             //dd($eIDataList);
             $eSData->electronicItems = $eIDataList;
-        }
+        }*/
         return $eSDataList;
         //dd($eSDataList);
     }

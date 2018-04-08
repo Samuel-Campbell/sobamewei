@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mongodb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,6 +32,12 @@ return [
     */
 
     'connections' => [
+
+        'mongodb' => [
+            'host' => '127.0.0.1',
+            'port' => '27017',
+            'database' => 'conushop'
+        ],
 
         'sqlite' => [
             'driver' => 'sqlite',

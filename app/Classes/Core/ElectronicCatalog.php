@@ -24,10 +24,10 @@ class ElectronicCatalog  {
 
     function setESList($eSListData) {
         //dd($eSListData);
-        foreach ($eSListData as $eSData) {
+  /*      foreach ($eSListData as $eSData) {
             $eS = new ElectronicSpecification($eSData);
             array_push($this->eSList, $eS);
-        }
+        }*/
     }
 
     function getESList() {

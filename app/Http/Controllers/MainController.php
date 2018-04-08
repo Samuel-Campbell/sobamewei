@@ -54,11 +54,12 @@ class MainController extends BaseController {
         if ($validator->fails()) {
             return Redirect::to('login')->withErrors($validator);
         } else {
-            if ($request->mapper->login($request->input('email'), $request->input('password')) && Auth::attempt($inputs)) {
+            if ($request->mapper->login($request->input('email'), $request->input('password')) && Auth::attempt
+                ($inputs)) {
                 $request->mapper->makeLoginLog($request->user()->id);
-
+                $loggedIn = Auth::check();
                 Session::flash('success_msg', "Successfully logged in.");
-                return Redirect::to('');
+                return Redirect::to('/')->with ("loggedIn",$loggedIn);
             } else {
                 //dd(Hash::make('admin'));
                 //return Redirect::to('login');
