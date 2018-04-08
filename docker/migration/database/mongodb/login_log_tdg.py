@@ -24,7 +24,10 @@ class LoginLogTdg(MongoDbConnector):
         key = {'id': model.id}
         row = self.client[self.database]['LoginLog'].find_one(key)
         model = LoginLog()
-        model.objectify(row)
+        try:
+            model.objectify(row)
+        except TypeError:
+            pass
         return model
 
     def update(self, model):
