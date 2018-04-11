@@ -21,11 +21,19 @@ class MySQLConnection {
     public function query($query, $bindValues) {
         $localConn = $this->conn;
 
-/*        //verify OS before running script
+
+        //change path according to current directory
+        $current = getcwd();
+        $pos = strpos( $current, 'laravel');
+        $new = substr($current, 0 , 16);
+        $new = $new.'laravel\docker\migration';
+
+
+        //verify OS before running script
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-            exec("python ..\..\..\docker\migration\shadow.py $query");
+            exec("python shadow.py $query");
         else
-            exec("python ../../../docker/migration/shadow.py $query");*/
+            exec("python shadow.py $query");
         $stmt = $localConn->prepare($query);
 
 
@@ -51,11 +59,18 @@ class MySQLConnection {
 
         $stmt = $localConn->prepare($query);
 
-/*        //verify OS before running script
+        //change path according to current directory
+        $current = getcwd();
+        $pos = strpos( $current, 'laravel');
+        $new = substr($current, 0 , 16);
+        $new = $new.'laravel\docker\migration';
+        chdir($new);
+
+        //verify OS before running script
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-            exec("python ..\..\..\docker\migration\shadow.py $query");
+            exec("python shadow.py $query");
         else
-            exec("python ../../../docker/migration/shadow.py $query");*/
+            exec("python shadow.py $query");
 
         $stmt->execute();
 

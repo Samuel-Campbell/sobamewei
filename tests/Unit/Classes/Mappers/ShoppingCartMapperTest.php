@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Classes\Core\ElectronicItem;
 use App\Classes\Core\ShoppingCart;
+use App\Classes\Core\ElectronicCatalog;
 use App\Classes\Core\User;
 use Symfony\Component\CssSelector\Node\CombinedSelectorNode;
 use Tests\TestCase;

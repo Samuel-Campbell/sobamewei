@@ -56,11 +56,11 @@ class ShoppingCartMapper {
     function __construct8($userId, $electronicCatalogTDGMock, $electronicCatalogMock, $shoppingCartMock,
     $shoppingCartTDGMock, $unitOfWorkMock, $identityMapMock, $transactionMock) {
         $this->electronicCatalogTDG = $electronicCatalogTDGMock;
-        $this->electronicCatalog = $electronicCatalogMock;
-        $this->shoppingCart =  ShoppingCart::getInstance();
+        //$this->electronicCatalog = $electronicCatalogMock;
+        //$this->shoppingCart =  ShoppingCart::getInstance();
         $this->shoppingCartTDG = $shoppingCartTDGMock;
         $this->unitOfWork = $unitOfWorkMock;
-        $this->identityMap = $identityMapMock;
+        //$this->identityMap = $identityMapMock;
         $this->transaction = $transactionMock;
 
     }
