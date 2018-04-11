@@ -27,6 +27,12 @@ class ShoppingCart  {
         $this->size =0;
     }
 
+    //Constructor used for testing purposes
+    //Allows to decouple tests that are dependant on the shoppingCart Singleton
+    public static function reset(){
+        self::$instance= new ShoppingCart();
+    }
+
     public static function getInstance(){
         if(self::$instance==null){
             self::$instance= new ShoppingCart();

@@ -18,22 +18,13 @@ class ElectronicSpecificationClassTest extends TestCase
     public function setUp(){
 
         parent::setUp();
-
-
-
         $this->electronicItemMock1 = $this ->createMock(ElectronicItem::Class);
-
-
-
     }
 
-    public function SetGetTest()
+    public function testSetGet()
     {
 
         $electronic = new ElectronicSpecification();
-
-
-
         $electronicItemData = new \stdClass();
         $electronicItemData->id = 'TESTINGID123';
         $electronicItemData->serialNumber = 'TESTINGSERIAL';
@@ -94,7 +85,7 @@ class ElectronicSpecificationClassTest extends TestCase
         }
         //dd($electronic);
 
-        $this->assertTrue($result);
+        $this->assertTrue(!$result);
     }
 
 }

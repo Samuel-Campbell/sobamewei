@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Classes\TDG\ShoppingCartTDG;
 use Tests\TestCase;
 
-class ShoppingCartTDGTest extends TestCase {
+class ShoppingCartTDGTestManualMocks extends TestCase {
     
     public function setUp(){
         $this->mockUser = new MockUser();

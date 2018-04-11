@@ -9,7 +9,7 @@
 use Tests\TestCase;
 use App\Http\Controllers\AuthController;
 
-class CustomerControllerTest extends TestCase
+class CustomerControllerT extends TestCase
 {
     protected $fillable = [
         'id', 'name', 'email', 'password',

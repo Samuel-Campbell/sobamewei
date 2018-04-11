@@ -14,7 +14,7 @@ class UserCatalogMapperTest extends TestCase{
         $this->userCatalogMapper->unitOfWork = new MockUnitOfWork();
         $this->userCatalogMapper->identityMap = new MockIdentityMap();*/
         $this->userCatalogTDGMock = $this
-            ->getMockBuilder(userCatalogTDG::class)
+            ->getMockBuilder(UserCatalogTDG::class)
             ->setMethods(
                 ['add',
                     'insertLoginLog',

@@ -23,8 +23,24 @@ class ShoppingCartMapper {
     public $unitOfWork;
     public $identityMap;
     public $ElectronicCatalogMapper;
+    public $electronicCatalog;
 
-    function __construct($userId) {
+
+    function __construct()
+    {
+        $argv = func_get_args();
+        switch (func_num_args()) {
+            case 1:
+                self::__construct1($argv[0]);
+                break;
+
+            case 4:
+                self::__construct8($argv[0], $argv[1], $argv[2], $argv[3], $argv[4], $argv[5], $argv[6], $argv[7]);
+                break;
+        }
+
+    }
+    function __construct1($userId) {
         $this->electronicCatalogTDG = new ElectronicCatalogTDG();
         $this->electronicCatalog = new ElectronicCatalog($this->electronicCatalogTDG->findAll());
         $this->shoppingCart = ShoppingCart::getInstance();
@@ -36,11 +52,25 @@ class ShoppingCartMapper {
 
     }
 
+    //constructor created for the purpose of mocking
+    function __construct8($userId, $electronicCatalogTDGMock, $electronicCatalogMock, $shoppingCartMock,
+    $shoppingCartTDGMock, $unitOfWorkMock, $identityMapMock, $transactionMock) {
+        $this->electronicCatalogTDG = $electronicCatalogTDGMock;
+        $this->electronicCatalog = $electronicCatalogMock;
+        $this->shoppingCart =  ShoppingCart::getInstance();
+        $this->shoppingCartTDG = $shoppingCartTDGMock;
+        $this->unitOfWork = $unitOfWorkMock;
+        $this->identityMap = $identityMapMock;
+        $this->transaction = $transactionMock;
+
+    }
+
     /**
      * @Contract\Verify("Auth::check() && Auth::user()->admin === 0 && count($this->shoppingCart->getEIList()) < 7")
      */
     function addToCart($eSId, $userId, $expiry) {
         if (count($this->shoppingCart->getEIList()) < 7) {
+            var_dump("here");
             $eI = $this->electronicCatalog->reserveFirstEIFromES($eSId, $userId, $expiry);
 
             if ($eI != null) {
@@ -79,5 +109,9 @@ class ShoppingCartMapper {
         $this->unitOfWork->commit();
         $this->shoppingCart->updateEIList();
         return 'Item Removed';
+    }
+
+    function getShoppingCart(){
+        return $this->shoppingCart;
     }
 }

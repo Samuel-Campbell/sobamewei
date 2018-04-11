@@ -23,7 +23,7 @@ class UserCatalogTDG {
 
         // Connect to Mongodb
         $mongoClient = new Client();
-        if($mongoClient != null) echo $mongoClient;
+        /*if($mongoClient != null) echo $mongoClient;*/
 
        //connect to conushop database
         $this->db = $mongoClient->conushop;

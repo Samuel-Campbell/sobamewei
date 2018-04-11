@@ -37,7 +37,7 @@ class ElectronicCatalogMapperTest extends TestCase
             ->getMock();
 
 
-        //creating an electronic catalog TDG mock
+        //creating an electronic catalog mock
         $this->electronicCatalogMock = $this
             ->getMockBuilder(ElectronicCatalog::class)
             ->disableOriginalConstructor()
