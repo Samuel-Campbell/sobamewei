@@ -25,15 +25,19 @@ class MySQLConnection {
         //change path according to current directory
         $current = getcwd();
         $pos = strpos( $current, 'laravel');
-        $new = substr($current, 0 , 16);
-        $new = $new.'laravel\docker\migration';
+        $new = substr($current, 0 , $pos);
 
 
         //verify OS before running script
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'){
+            $new = $new.'laravel\docker\migration';
+            chdir($new);
             exec("python shadow.py $query");
-        else
+        }else{
+            $new = $new.'laravel/docker/migration';
+            chdir($new);
             exec("python shadow.py $query");
+        }
         $stmt = $localConn->prepare($query);
 
 
@@ -54,23 +58,27 @@ class MySQLConnection {
         }
     }
 
-    public function directQuery($query) {
+    public function directQuery($query)
+    {
         $localConn = $this->conn;
 
         $stmt = $localConn->prepare($query);
 
         //change path according to current directory
         $current = getcwd();
-        $pos = strpos( $current, 'laravel');
-        $new = substr($current, 0 , 16);
-        $new = $new.'laravel\docker\migration';
-        chdir($new);
+        $pos = strpos($current, 'laravel');
+        $new = substr($current, 0, $pos);
 
         //verify OS before running script
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $new = $new . 'laravel\docker\migration';
+            chdir($new);
             exec("python shadow.py $query");
-        else
+         }else{
+            $new = $new . 'laravel/docker/migration';
+            chdir($new);
             exec("python shadow.py $query");
+        }
 
         $stmt->execute();
 
