@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Classes\Mappers\ShoppingCartMapper;
 
-class ShoppingCartMapperTestManualMocks extends TestCase{
+class ShoppingCartMapperTest extends TestCase{
     public function setUp(){
         $this->shoppingCartMapper = new ShoppingCartMapper(-1);
         $this->shoppingCartMapper->shoppingCart = new MockShoppingCart();
